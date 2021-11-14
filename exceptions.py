@@ -1,0 +1,2 @@
+class TimestampFormatException(Exception):
+    pass

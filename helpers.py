@@ -1,5 +1,7 @@
 from collections import Counter
 
+from exceptions import TimestampFormatException
+
 
 def timestamp_to_seconds(timestamp: str) -> int:
     c = Counter(timestamp)
@@ -11,7 +13,17 @@ def timestamp_to_seconds(timestamp: str) -> int:
         case 2:
             hours, minutes, seconds = timestamp.split(":")
 
-    return int(hours) * 3600 + int(minutes) * 60 + int(seconds)
+        case _:
+            raise TimestampFormatException
+
+    try:
+        hours = int(hours)
+        minutes = int(minutes)
+        seconds = int(seconds)
+    except ValueError:
+        raise TimestampFormatException
+
+    return hours * 3600 + minutes * 60 + seconds
 
 
 def retrieve_transcript_podcast(transcript_path: str) -> list[str]:
