@@ -12,3 +12,11 @@ def timestamp_to_seconds(timestamp: str) -> int:
             hours, minutes, seconds = timestamp.split(":")
 
     return int(hours) * 3600 + int(minutes) * 60 + int(seconds)
+
+
+def retrieve_transcript_podcast(transcript_path: str) -> list[str]:
+    with open(transcript_path, "r") as file:
+        text = file.read()
+
+    lines = text.split("\n")
+    return lines
