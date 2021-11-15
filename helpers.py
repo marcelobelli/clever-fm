@@ -1,5 +1,5 @@
 from collections import Counter
-from typing import Iterator
+from typing import Iterable, Iterator, Union
 
 from exceptions import TimestampFormatException
 
@@ -66,3 +66,11 @@ def words_per_second_from_excerpt(excerpt: list) -> Iterator[list[str]]:
 
     for i in range(0, len(words), words_per_sec):
         yield words[i : i + words_per_sec]
+
+
+def flatten_iterables(value: Union[Iterable, str]):
+    if isinstance(value, str):
+        yield value
+    else:
+        for x in value:
+            yield from flatten_iterables(x)
