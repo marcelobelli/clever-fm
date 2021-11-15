@@ -50,8 +50,19 @@ def test_get_words_per_second_from_excerpt_from_the_middle_of_the_transcript():
 
 def test_get_words_per_second_from_excerpt_when_ending_is_none():
     excerpt = [24, "And I'm Dan Charles. Thanks for listening.", None]
-    expected = [(24, ["And", "I'm"]), (25, ["Dan", "Charles."]), (26, ["Thanks", "for"]), (27, ["listening."])]
+    expected = [(24, ["And", "I'm", "Dan"]), (25, ["Charles.", "Thanks"]), (26, ["for", "listening."])]
 
     result = [r for r in words_per_second_from_excerpt(excerpt)]
 
     assert result == expected
+
+
+def test_get_words_per_second_from_excerpt_must_respect_the_diff_between_start_and_end_time():
+    excerpt = [21, "Everybody really just about literally everybody was growing Red Delicious.", 24]
+    expected = [
+        (21, ["Everybody", "really", "just", "about"]),
+        (22, ["literally", "everybody", "was"]),
+        (23, ["growing", "Red", "Delicious."]),
+    ]
+
+    assert list(words_per_second_from_excerpt(excerpt)) == expected
