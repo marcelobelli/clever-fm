@@ -1,6 +1,17 @@
-from dataclasses import dataclass
+from pydantic import BaseModel
+
+import helpers
 
 
-@dataclass
-class Transcript:
-    pass
+class Transcript(BaseModel):
+    _data: list = [""]
+
+    @classmethod
+    def create_from_transcript_data(cls, transcript_data: list[str]) -> "Transcript":
+        transcript = cls()
+
+        for excerpt in helpers.raw_transcript_to_excerpts(transcript_data):
+            for words in helpers.words_per_second_from_excerpt(excerpt):
+                transcript._data.append(words)
+
+        return transcript
