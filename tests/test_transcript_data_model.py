@@ -68,8 +68,24 @@ def test_create_transcript_dataclass_from_transcript_data(transcript_data):
 
 @pytest.mark.parametrize(
     "cut, expected_result",
-    ((slice(1, 2), [["When", "I", "was"]]),
-     (slice(2, 5), [["a", "kid,", "apples"], ["were", "garbage.", "They"], ["were", "called", "Red"]]),)
+    (
+        (slice(1, 2), [["When", "I", "was"]]),
+        (slice(2, 5), [["a", "kid,", "apples"], ["were", "garbage.", "They"], ["were", "called", "Red"]]),
+    ),
 )
 def test_get_on_transcript(cut, expected_result, transcript):
     assert transcript[cut] == expected_result
+
+
+@pytest.mark.parametrize(
+    "start_time, end_time, expected",
+    (
+        (0, 3, "When I was a kid, apples were garbage. They"),
+        (1, 3, "When I was a kid, apples were garbage. They"),
+        (3, 3, "were garbage. They"),
+        (5, 7, "Delicious and they were red. They were not delicious."),
+        (25, None, "And I'm Dan Charles. Thanks for listening."),
+    ),
+)
+def test_get_excerpt(start_time, end_time, expected, transcript):
+    assert transcript.get_excerpt(start_time, end_time) == expected
