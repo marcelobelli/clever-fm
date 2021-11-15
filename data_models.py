@@ -4,6 +4,8 @@ from typing import Iterator
 from exceptions import TimestampFormatException
 from helpers import timestamp_to_seconds
 
+TIME_RANGE_FALLBACK = 3
+
 
 @dataclass
 class Transcript:
@@ -11,12 +13,15 @@ class Transcript:
 
     @classmethod
     def words_per_second_from_excerpt(cls, excerpt: list) -> Iterator[tuple[int, list[str]]]:
-        time_range = excerpt[2] - excerpt[0]
+        try:
+            time_range = excerpt[2] - excerpt[0]
+        except TypeError:
+            time_range = TIME_RANGE_FALLBACK
         words = excerpt[1].split(" ")
         words_per_sec = round(len(words) / time_range)
 
         for i in range(0, len(words), words_per_sec):
-            yield words[i: i + words_per_sec]
+            yield words[i : i + words_per_sec]
 
     @classmethod
     def raw_transcript_to_excerpts(cls, raw_transcript: list[str]) -> Iterator[list]:

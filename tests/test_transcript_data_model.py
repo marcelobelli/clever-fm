@@ -84,3 +84,12 @@ def test_get_words_per_second_from_excerpt_from_the_middle_of_the_transcript():
     result = [r for r in Transcript.words_per_second_from_excerpt(excerpt)]
 
     assert result == expected
+
+
+def test_get_words_per_second_from_excerpt_when_ending_is_none():
+    excerpt = [24, "And I'm Dan Charles. Thanks for listening.", None]
+    expected = [["And", "I'm"], ["Dan", "Charles."], ["Thanks", "for"], ["listening."]]
+
+    result = [r for r in Transcript.words_per_second_from_excerpt(excerpt)]
+
+    assert result == expected
