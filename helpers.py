@@ -56,16 +56,18 @@ def raw_transcript_to_excerpts(raw_transcript: list[str]) -> Iterator[list]:
             excerpt = [timestamp]
 
 
-def words_per_second_from_excerpt(excerpt: list) -> Iterator[list[str]]:
+def words_per_second_from_excerpt(excerpt: list) -> Iterator[tuple[int, list[str]]]:
     try:
         time_range = excerpt[2] - excerpt[0]
     except TypeError:
         time_range = TIME_RANGE_FALLBACK
     words = excerpt[1].split(" ")
     words_per_sec = round(len(words) / time_range)
+    second = excerpt[0]
 
     for i in range(0, len(words), words_per_sec):
-        yield words[i : i + words_per_sec]
+        yield second, words[i : i + words_per_sec]
+        second += 1
 
 
 def flatten_iterables(value: Union[Iterable, str]):
@@ -73,4 +75,6 @@ def flatten_iterables(value: Union[Iterable, str]):
         yield value
     else:
         for x in value:
+            if not isinstance(x, Iterable):
+                continue
             yield from flatten_iterables(x)
