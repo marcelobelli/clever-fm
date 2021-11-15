@@ -1,8 +1,11 @@
+import pytest
+
 from data_models import Transcript
 
 
-def test_create_transcript_dataclass_from_transcript_data():
-    transcript_data = [
+@pytest.fixture
+def transcript_data():
+    return [
         "0:01  ",
         "When I was a kid, apples were garbage. They were called Red Delicious and they were red. They were not delicious. They looked beautiful, but then you bite into it, and almost always it would be mushy and mealy, just nasty.",
         "",
@@ -18,6 +21,14 @@ def test_create_transcript_dataclass_from_transcript_data():
         "Transcribed by https://otter.ai",
         "",
     ]
+
+
+@pytest.fixture
+def transcript(transcript_data):
+    return Transcript.create_from_transcript_data(transcript_data)
+
+
+def test_create_transcript_dataclass_from_transcript_data(transcript_data):
     expected = [
         "",
         ["When", "I", "was"],
@@ -53,3 +64,12 @@ def test_create_transcript_dataclass_from_transcript_data():
     transcript = Transcript.create_from_transcript_data(transcript_data)
 
     assert transcript._data == expected
+
+
+@pytest.mark.parametrize(
+    "cut, expected_result",
+    ((slice(1, 2), [["When", "I", "was"]]),
+     (slice(2, 5), [["a", "kid,", "apples"], ["were", "garbage.", "They"], ["were", "called", "Red"]]),)
+)
+def test_get_on_transcript(cut, expected_result, transcript):
+    assert transcript[cut] == expected_result

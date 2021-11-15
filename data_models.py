@@ -6,6 +6,10 @@ import helpers
 class Transcript(BaseModel):
     _data: list = [""]
 
+    def __getitem__(self, position):
+        return self._data[position]
+
+
     @classmethod
     def create_from_transcript_data(cls, transcript_data: list[str]) -> "Transcript":
         transcript = cls()
