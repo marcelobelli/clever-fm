@@ -3,6 +3,8 @@ from typing import Optional
 
 import helpers
 
+from os.path import basename, splitext
+
 
 @dataclass
 class Transcript:
@@ -27,3 +29,15 @@ class Transcript:
                 transcript._data.append(words)
 
         return transcript
+
+    @classmethod
+    def create_episodes_data(cls, episodes: list) -> dict[str, "Transcript"]:
+        episodes_data = {}
+
+        for episode in episodes:
+            episode_id = basename(episode)
+            episode_id = splitext(episode_id)[0]
+            transcript_data = helpers.retrieve_transcript_podcast(episode)
+            episodes_data[episode_id] = cls.create_from_transcript_data(transcript_data)
+
+        return episodes_data

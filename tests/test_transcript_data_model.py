@@ -48,3 +48,15 @@ def test_create_transcript_dataclass_from_transcript_data(transcript_data):
 )
 def test_get_excerpt(start_time, end_time, expected, transcript):
     assert transcript.get_excerpt(start_time, end_time) == expected
+
+
+def test_create_episodes_data():
+    episodes = ["./fixture-ep-1.txt", "./fixture-ep-2.txt", "./fixture-ep-3.txt"]
+    expected_episodes_id = ["fixture-ep-1", "fixture-ep-2", "fixture-ep-3"]
+
+    episodes_data = Transcript.create_episodes_data(episodes)
+
+    assert list(episodes_data.keys()) == expected_episodes_id
+
+    for transcript in episodes_data.values():
+        assert isinstance(transcript, Transcript)
