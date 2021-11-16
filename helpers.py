@@ -2,8 +2,9 @@ from collections import Counter
 from typing import Iterable, Iterator, Union
 
 from exceptions import TimestampFormatException
+from math import floor
 
-TIME_RANGE_FALLBACK = 3
+RANGE_IN_SECS_FALLBACK = 3
 
 
 def timestamp_to_seconds(timestamp: str) -> int:
@@ -58,35 +59,27 @@ def raw_transcript_to_excerpts(raw_transcript: list[str]) -> Iterator[list]:
 
 def words_per_second_from_excerpt(excerpt: list) -> Iterator[tuple[int, list[str]]]:
     try:
-        time_range = excerpt[2] - excerpt[0]
+        range_in_secs = excerpt[2] - excerpt[0]
     except TypeError:
-        time_range = TIME_RANGE_FALLBACK
+        range_in_secs = RANGE_IN_SECS_FALLBACK
+
     words = excerpt[1].split(" ")
-    words_per_sec = round(len(words) / time_range)
+    total_words = len(words)
+    words_per_sec = floor(total_words / range_in_secs)
     second = excerpt[0]
 
-    response = []
-    for i in range(0, len(words), words_per_sec):
-        response.append((second, words[i:i + words_per_sec]))
+    initial = 0
+    end = words_per_sec
+    diff = total_words % range_in_secs
+
+    for i in range(range_in_secs):
+        if diff > 0:
+            end += 1
+            diff -= 1
+        yield second, words[initial:end]
         second += 1
-
-    if len(response) == time_range:
-        for r in response:
-            yield r
-    else:
-        initial = 0
-        end = words_per_sec
-        second = excerpt[0]
-        diff = len(words) % words_per_sec
-
-        for i in range(time_range):
-            if diff > 0:
-                end += 1
-                diff -= 1
-            yield second, words[initial:end]
-            second += 1
-            initial = end
-            end += words_per_sec
+        initial = end
+        end += words_per_sec
 
 
 def flatten_iterables(value: Union[Iterable, str]):
