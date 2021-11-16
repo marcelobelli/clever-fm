@@ -1,11 +1,11 @@
-from helpers import retrieve_transcript_podcast
 from data_models import Transcript
 
-def retrieve_segment_transcript(episode_id, start_time, end_time):
-    transcript_data = retrieve_transcript_podcast(episode_id + ".txt")
-    transcript = Transcript.create_from_transcript_data(transcript_data)
+EPISODES = ["episode_1.txt"]
+EPISODES_DATA = Transcript.create_episodes_data(EPISODES)
 
-    return transcript.get_excerpt(start_time, end_time)
+
+def retrieve_segment_transcript(episode_id, start_time, end_time):
+    return EPISODES_DATA[episode_id].get_excerpt(start_time, end_time)
 
 
 def test_case_1():
