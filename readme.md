@@ -1,66 +1,36 @@
 # Clever.fm: Take Home Problem
 
-## Context
+### Data Structure
 
-The Clever.fm podcast app allows users to transcribe a segment of the audio
-they just heard in the episode.
+For the transcript, the `list` data structure was my choice from the beginning.
 
-## Question
+#### Why
 
-We want you to implement a data structure to store transcripts and a script to
-retrieve transcript segments between a start and end time. The full episode
-transcript is available as a .txt file in the same folder as the main.py file.
-Episodes are identified by a unique ID.
+My idea was to use the index as a reference of second of the transcript. 
+With that, I could retrieve any segment of the transcript in O(1).
 
-For example,
-```
-retrieve_segment_transcript(episode_id, start_time, end_time)
-```
-retrieves the segment of transcript between `start_time` -> `end_time` for the
-episode corresponding to `episode_id`.
+### Challenges
 
-This means that the three inputs to the script are:
-- start_time (float, seconds from the begining of the episode)
-- end_time (float, seconds from the begining of the episode)
-- episode_id (str, to identify the transcript file)
+Make the `words_per_second_from_excerpt` function wo[rks correctly. It was hard to find
+the "sweet spot" to make the right division in a way that the function would always
+distribute words respecting the number of seconds that each segment has.
 
-The `main.py` file contains a stub for you to fill out. It includes a few test
-cases, but you can add more of your own as you see fit. We'll run the main.py
-file to execute the solution, but you are free to structure your code as you
-want.
+### Known Issues
 
-## Transcript format
+The flow to transform the transcript **text** into a transcript **object** is not very performatic.
+But at the same time I think that in a real world scenario this transformation would only occur once,
+so maybe it's the kind of thing that could run until we need to escalate.
 
-```
-0:01  
-When I was a kid, apples were garbage. They were called Red Delicious and they were red. They were not delicious. They looked beautiful, but then you bite into it, and almost always it would be mushy and mealy, just nasty.
+### Tests
 
-0:15  
-It was a really bad time to be an apple eater. It was also a really bad time to be an apple grower.
+To run the tests that I create, first install pytest
 
-0:21  
-Everybody really just about literally everybody was growing Red Delicious.
-
+```shell
+$ pip install -r requirements-dev.txt
 ```
 
-Here's a link to the episode above: https://www.npr.org/transcripts/410085320
+Then run pytest
 
-Note: This isn't needed to solve the problem and provided just in case you are
-curious.
-
-## Explanation of format
-
-- The file is guaranteed to repeat the following three line format:
+```shell
+$ pytest
 ```
-timestamp
-transcript
-blank line
-```
-- The timestamp line specifies the start time of the first word in `transcript` that follows
-- Timestamp is in the format h:m:ss
-
-## General comments
-
-- The problem is general on purpose and we have left out some details on purpose.
-If you think some information is missin, please feel free to make an assumption and document it. 
-- During the in-person interview, we'll expand upon the same problem. So, I encourage you to dig deep and think about how we might integrate this functionality into a backend system.
