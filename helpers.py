@@ -78,13 +78,3 @@ def words_per_second_from_excerpt(excerpt: list) -> Iterator[tuple[int, list[str
         yield " ".join(words[initial:end])
         initial = end
         end += words_per_sec
-
-
-def flatten_iterables(value: Union[Iterable, str]):
-    if isinstance(value, str):
-        yield value
-    else:
-        for x in value:
-            if not isinstance(x, Iterable):
-                continue
-            yield from flatten_iterables(x)
