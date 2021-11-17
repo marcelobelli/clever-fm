@@ -66,7 +66,6 @@ def words_per_second_from_excerpt(excerpt: list) -> Iterator[tuple[int, list[str
     words = excerpt[1].split(" ")
     total_words = len(words)
     words_per_sec = floor(total_words / range_in_secs)
-    second = excerpt[0]
 
     initial = 0
     end = words_per_sec
@@ -76,8 +75,7 @@ def words_per_second_from_excerpt(excerpt: list) -> Iterator[tuple[int, list[str
         if diff > 0:
             end += 1
             diff -= 1
-        yield second, words[initial:end]
-        second += 1
+        yield " ".join(words[initial:end])
         initial = end
         end += words_per_sec
 
