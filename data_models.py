@@ -16,9 +16,8 @@ class Transcript:
     def get_excerpt(self, start_time: int, end_time: Optional[int]) -> str:
         start_time = start_time if start_time > 0 else 1
         end_time = end_time if end_time else len(self._data)
-        excerpt = [word for word in helpers.flatten_iterables(self._data[start_time:end_time])]
 
-        return " ".join(excerpt)
+        return " ".join(self._data[start_time:end_time])
 
     @classmethod
     def create_from_transcript_data(cls, transcript_data: list[str]) -> "Transcript":
