@@ -5,8 +5,8 @@ from helpers import retrieve_transcript_podcast
 
 
 @pytest.fixture
-def transcript_data():
-    return retrieve_transcript_podcast("./fixture-ep-1.txt")
+def transcript_data(episode_1_file):
+    return retrieve_transcript_podcast(episode_1_file)
 
 
 @pytest.fixture
@@ -50,8 +50,8 @@ def test_get_excerpt(start_time, end_time, expected, transcript):
     assert transcript.get_excerpt(start_time, end_time) == expected
 
 
-def test_create_episodes_data():
-    episodes = ["./fixture-ep-1.txt", "./fixture-ep-2.txt", "./fixture-ep-3.txt"]
+def test_create_episodes_data(episode_1_file, episode_2_file, episode_3_file):
+    episodes = [episode_1_file, episode_2_file, episode_3_file]
     expected_episodes_id = ["fixture-ep-1", "fixture-ep-2", "fixture-ep-3"]
 
     episodes_data = Transcript.create_episodes_data(episodes)

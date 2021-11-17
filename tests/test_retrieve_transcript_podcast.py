@@ -1,8 +1,7 @@
 from helpers import retrieve_transcript_podcast
 
 
-def test_function():
-    transcript_path = "./fixture-ep-1.txt"
+def test_function(episode_1_file):
     expected = [
         "0:01  ",
         "When I was a kid, apples were garbage. They were called Red Delicious and "
@@ -325,4 +324,4 @@ def test_function():
         "",
     ]
 
-    assert retrieve_transcript_podcast(transcript_path) == expected
+    assert retrieve_transcript_podcast(episode_1_file) == expected
